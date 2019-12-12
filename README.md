@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # mypro
 
 ## Project setup
@@ -22,3 +23,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+=======
+# heimaNews
+>>>>>>> 52f2275d6b1bae5b1280c30f5d73835e2da8101c
