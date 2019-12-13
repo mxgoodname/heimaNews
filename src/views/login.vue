@@ -8,25 +8,64 @@
         <span class="iconfont iconnew"></span>
       </div>
       <div class="inputs">
-        <input data-v-744880be placeholder="请输入手机号" class="input" />
-        <input data-v-744880be placeholder="密码" class="input" type="password" />
+        <myinput  placeholder="用户名/手机号"
+        v-model="users.username"
+        :rules='/^1\d{10}$/'
+        msg_err='手机号输入错误请输入11位手机号'
+        />
+        <myinput  placeholder="密码" type="password" v-model="users.password"/>
       </div>
       <p class="tips">
         没有账号？
         <a href="#/register" class>去注册</a>
       </p>
-      <div data-v-4bc01e24 class="button">登录按钮</div>
+      <mybutton type='danger' @click="login">登录按钮</mybutton>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+import mybutton from '@/components/mybutton.vue'
+import myinput from '@/components/myinput.vue'
+import { userLogin } from '@/api/users.js'
+export default {
+  data () {
+    return {
+      users: {
+        username: '111',
+        password: '222'
+      }
+    }
+  },
+  components: {
+    mybutton, myinput
+  },
+  methods: {
+    login (event) {
+      userLogin(this.users)
+        .then(res => {
+          console.log(res)
+
+          if (res.data.message === '登录成功') {
+
+          } else {
+            this.$toast.fail(res.data.message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$toast.fail('登录失败，请重试')
+        })
+    }
+  }
+}
 </script>
 
 <style lang='less' scoped>
 .container {
   padding: 20px;
+  height: 100vh;
+  background-color: rgb(242,242,242);
 }
 
 .close {

@@ -5,7 +5,7 @@ import login from '@/views/login.vue'
 Vue.use(VueRouter)
 
 var router = new VueRouter({
-  routers: [
+  routes: [
     {
       name: 'login',
       path: '/login',
