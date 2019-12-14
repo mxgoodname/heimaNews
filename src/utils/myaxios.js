@@ -3,12 +3,14 @@ import { Toast } from 'vant'
 
 axios.defaults.baseURL = 'http://localhost:3000'
 
+localStorage.setItem('hm_40_baseURL', axios.defaults.baseURL)
+
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
 //   console.log(config)
 
   // 在发送请求之前做些什么
-  let token = localStorage.getItem('heima_40_token')
+  let token = localStorage.getItem('hm_40_token')
   if (token) {
     config.headers.Authorization = token
   }
