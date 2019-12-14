@@ -4,8 +4,10 @@ import App from './App.vue'
 import router from '@/router/index.js'
 
 import '@/styles/reset.css'
-import { Toast } from 'vant'
+import { Toast, Uploader } from 'vant'
+
 Vue.use(Toast)
+Vue.use(Uploader)
 
 Vue.config.productionTip = false
 
