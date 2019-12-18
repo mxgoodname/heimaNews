@@ -1,6 +1,8 @@
 <template>
   <div class="head">
-      <span class="iconfont iconjiantou2"></span>
+      <span class="iconfont iconjiantou2">
+          <slot name="left"></slot>
+      </span>
       <span class="title">
           <slot name="title"></slot>
       </span>

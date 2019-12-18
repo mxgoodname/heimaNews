@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     exit () {
-      window.location.href = '#/login'
+      window.location.href = '#/index'
       localStorage.removeItem('hm_40_token')
     }
   }

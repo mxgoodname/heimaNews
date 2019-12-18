@@ -1,7 +1,7 @@
 <template>
   <div class="list" @click="handlerclick">
       <div class="left"><span >{{title}}</span></div>
-      <div class="right"><span >{{content}}</span>
+      <div class="right"><span >{{type==='password'? '****':content}}</span>
       <span class="iconfont iconjiantou1"></span>
       </div>
   </div>
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  props: ['title', 'content'],
+  props: ['title', 'content', 'type'],
   methods: {
     handlerclick (event) {
       this.$emit('click', event)

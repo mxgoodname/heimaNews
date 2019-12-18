@@ -44,10 +44,9 @@ export default {
     login (event) {
       userLogin(this.users)
         .then(res => {
-          console.log(res)
-
           if (res.data.message === '登录成功') {
             localStorage.setItem('hm_40_token', res.data.data.token)
+            localStorage.setItem('hm_40_id', res.data.data.user.id)
             this.$router.push({ path: `/personal/${res.data.data.user.id}` })
           } else {
             this.$toast.fail(res.data.message)
