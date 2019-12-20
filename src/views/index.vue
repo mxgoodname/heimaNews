@@ -76,6 +76,8 @@ export default {
         pageSize: this.cateList[this.active].pageSize,
         category: this.cateList[this.active].id
       })
+      console.log(res)
+
       this.cateList[this.active].postList.push(...res.data.data)
       this.cateList[this.active].loading = false
       this.cateList[this.active].isLoading = false

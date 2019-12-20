@@ -13,9 +13,9 @@
         <span class="iconfont iconjiantou1"></span>
       </div>
     </router-link>
-    <userlist title="我的关注" content="关注的用户"></userlist>
+    <userlist title="我的关注" content="关注的用户" @click="$router.push({path:'/followList'})"></userlist>
     <userlist title="我的跟帖" content="跟帖/回复"></userlist>
-    <userlist title="我的收藏" content="文章/视频"></userlist>
+    <userlist title="我的收藏" content="文章/视频" @click="$router.push({path:'/articleLike'})"></userlist>
     <userlist title="设置"></userlist>
     <mybutton type="danger" class="exit" @click="exit">退出</mybutton>
   </div>

@@ -7,6 +7,9 @@ import editPersonal from '@/views/editPersonal.vue'
 import index from '@/views/index.vue'
 import register from '@/views/register.vue'
 import articleDetail from '@/views/articleDetail.vue'
+import followList from '@/views/followList.vue'
+import articleLike from '@/views/articleLike.vue'
+import comments from '@/views/comments.vue'
 Vue.use(VueRouter)
 
 var router = new VueRouter({
@@ -40,6 +43,21 @@ var router = new VueRouter({
       name: 'articleDetail',
       path: '/articleDetail/:id',
       component: articleDetail
+    },
+    {
+      name: 'followList',
+      path: '/followList',
+      component: followList
+    },
+    {
+      name: 'articleLike',
+      path: '/articleLike',
+      component: articleLike
+    },
+    {
+      name: 'comments',
+      path: '/comments/:id',
+      component: comments
     }
   ]
 })

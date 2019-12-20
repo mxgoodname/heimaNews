@@ -5,7 +5,10 @@
         <van-icon name="arrow-left back" @click="$router.back()" />
         <span class="iconfont iconnew new"></span>
       </div>
-      <span @click="followThisUser" :class="{follow:article.has_follow}">{{article.has_follow?'已关注':'关注'}}</span>
+      <span
+        @click="followThisUser"
+        :class="{follow:article.has_follow}"
+      >{{article.has_follow?'已关注':'关注'}}</span>
     </div>
     <div class="detail">
       <div class="title">{{article.title}}</div>
@@ -14,10 +17,11 @@
         <span>2019-9-9</span>
       </div>
       <div class="content" v-html="article.content" v-if="article.type===1"></div>
-      <video v-if="article.type===2" :src="article.content" controls ></video>
+      <video v-if="article.type===2" :src="article.content" controls></video>
       <div class="opt">
-        <span class="like">
-          <van-icon name="good-job-o" />点赞
+        <span class="like" :class="{active:article.has_like}">
+          <van-icon name="good-job-o" @click="likeThisArticle" />
+          {{article.like_length}}
         </span>
         <span class="chat">
           <van-icon name="chat" class="w" />微信
@@ -27,39 +31,54 @@
     <!-- 精彩跟帖 -->
     <div class="keeps">
       <h2>精彩跟帖</h2>
-      <div class="item">
+      <div class="item" v-for="item in commentList" :key="item.id">
         <div class="head">
-          <img src="../assets/logo.png" alt />
+          <img :src="item.user.head_img" alt />
           <div>
-            <p>火星网友</p>
+            <p>{{item.user.nickname}}</p>
             <span>2小时前</span>
           </div>
           <span>回复</span>
         </div>
-        <div class="text">文章说得很有道理</div>
+        <div class="text">{{item.content}}</div>
       </div>
       <div class="more">更多跟帖</div>
     </div>
+    <articleFoot :article='article'></articleFoot>
   </div>
 </template>
 
 <script>
-import { getArticleDetail } from '@/api/article.js'
+import { getArticleDetail, likeArticle, getCommentsById } from '@/api/article.js'
 import { unFollowUser, followUser } from '@/api/users.js'
+import articleFoot from '@/components/articleFoot.vue'
 export default {
   data () {
     return {
       id: this.$route.params.id,
-      article: {}
+      article: {},
+      commentList: []
     }
+  },
+  components: {
+    articleFoot
   },
   async mounted () {
     // 根据id获取文章的详情，实现文章详情的动态渲染
     let res = await getArticleDetail(this.id)
     if (res.status === 200) {
       this.article = res.data.data
+      let res1 = await getCommentsById(this.article.id, { pageSize: 10 })
+      if (res1.status === 200) {
+        console.log(res1)
+        this.commentList = res1.data.data.map(value => {
+          value.user.head_img = localStorage.getItem('hm_40_baseURL') + value.user.head_img
+          return value
+        })
+        // console.log(this.commentList)
+      }
     }
-    console.log(this.article)
+    // console.log(this.article)
   },
   methods: {
     async followThisUser () {
@@ -72,12 +91,27 @@ export default {
       console.log(res)
       this.article.has_follow = !this.article.has_follow
       this.$toast.success(res.data.message)
+    },
+    async likeThisArticle () {
+      let res = await likeArticle(this.article.id)
+      console.log(res)
+      console.log(this.article)
+      if (res.data.message === '点赞成功') {
+        this.article.like_length++
+      } else if (res.data.message === '取消成功') {
+        this.article.like_length--
+      }
+      this.$toast.success(res.data.message)
+      this.article.has_like = !this.article.has_like
     }
   }
 }
 </script>
 
 <style lang='less' scoped>
+.articaldetail{
+  padding-bottom: 50px;
+}
 .header {
   padding: 0px 10px;
   height: 50px;
@@ -99,7 +133,7 @@ export default {
       font-size: 50px;
     }
   }
-  .follow{
+  .follow {
     background-color: #f00;
     color: #fff;
   }
@@ -130,9 +164,9 @@ export default {
     padding-bottom: 30px;
     width: 100%;
   }
-  video{
-      width: 100%;
-      border-bottom:10px;
+  video {
+    width: 100%;
+    border-bottom: 10px;
   }
 }
 .opt {
@@ -147,6 +181,9 @@ export default {
     text-align: center;
     border: 1px solid #ccc;
     border-radius: 15px;
+  }
+  .active {
+    color: #f00;
   }
   .w {
     color: rgb(84, 163, 5);
@@ -188,12 +225,12 @@ export default {
         font-size: 13px;
       }
     }
-    .text {
+  }
+  .text {
       font-size: 14px;
       color: #333;
       padding: 20px 0 10px 0;
     }
-  }
   .more {
     width: 100px;
     height: 30px;
@@ -205,10 +242,10 @@ export default {
     font-size: 13px;
   }
 }
-/deep/.photo{
-    img{
-        width: 100%;
-        display: block;
-    }
+/deep/.photo {
+  img {
+    width: 100%;
+    display: block;
+  }
 }
 </style>
